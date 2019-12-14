@@ -1,0 +1,28 @@
+VertexLitGeneric
+{
+	$basetexture	models\weapons\v_mom_rocketlauncher\MOM-RocketLauncher_D
+	$selfIllum		0
+	$phongAlbedoTint		1
+	$bumpmap		models\weapons\v_mom_rocketlauncher\MOM-RocketLauncher_N
+	$normalMapAlphaEnvMapMask		1
+	//$color2			"[.8 .8 .8]"
+	
+	$envmap			env_cubemap
+	$envmaptint		"[.8 .8 .8]"
+	//$envmapmask	models\weapons\v_mom_rocketlauncher\MOM-RocketLauncher_S
+	$envmapfresnel	1
+	
+	//$bluramount		2
+	//$refractamount	.4
+	
+	$phong					1
+	$halfLambert			0
+	$phongfresnelranges		"[.05 .5 2]"
+	$phongexponentTexture	models\weapons\v_mom_rocketlauncher\MOM-RocketLauncher_EXP
+	$phongboost				180
+	
+	$rimlight				1
+	$rimlightboost			10
+	$rimlightexponent		255
+
+}

@@ -7,8 +7,8 @@ WeaponData
     
     // Weapon data is loaded by both the Game and Client DLLs.
     "printname"         "#MOM_Weapon_RocketLauncher"
-    "viewmodel"         "models/weapons/v_rpg_edit.mdl"
-    "playermodel"       "models/weapons/w_rocket_launcher.mdl"
+	"viewmodel"         "models/weapons/v_mom_rocketlauncher.mdl"
+    "playermodel"       "models/weapons/v_mom_rocketlauncher.mdl"
     
     "anim_prefix"      "anim"
     "bucket"            "0"
