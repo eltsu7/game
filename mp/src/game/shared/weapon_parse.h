@@ -22,7 +22,7 @@ typedef unsigned short WEAPON_FILE_INFO_HANDLE;
 // Used to play sounds defined in the weapon's classname.txt file
 // This needs to match pWeaponSoundCategories in weapon_parse.cpp
 // ------------------------------------------------------------
-typedef enum {
+enum WeaponSound_t {
 	EMPTY,
 	SINGLE,
 	SINGLE_NPC,
@@ -39,11 +39,12 @@ typedef enum {
 	SPECIAL3,
 	TAUNT,
 	DEPLOY,
+	EXPLOSION,
 
 	// Add new shoot sound types here
 
 	NUM_SHOOT_SOUND_TYPES,
-} WeaponSound_t;
+};
 
 int GetWeaponSoundFromString( const char *pszString );
 

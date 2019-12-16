@@ -16,8 +16,7 @@
 
 // The sound categories found in the weapon classname.txt files
 // This needs to match the WeaponSound_t enum in weapon_parse.h
-#if !defined(_STATIC_LINKED) || defined(CLIENT_DLL)
-const char *pWeaponSoundCategories[ NUM_SHOOT_SOUND_TYPES ] = 
+static const char* const g_pWeaponSoundCategories[ NUM_SHOOT_SOUND_TYPES ] = 
 {
 	"empty",
 	"single_shot",
@@ -34,17 +33,15 @@ const char *pWeaponSoundCategories[ NUM_SHOOT_SOUND_TYPES ] =
 	"special2",
 	"special3",
 	"taunt",
-	"deploy"
+	"deploy",
+	"explosion"
 };
-#else
-extern const char *pWeaponSoundCategories[ NUM_SHOOT_SOUND_TYPES ];
-#endif
 
 int GetWeaponSoundFromString( const char *pszString )
 {
 	for ( int i = EMPTY; i < NUM_SHOOT_SOUND_TYPES; i++ )
 	{
-		if ( !Q_stricmp(pszString,pWeaponSoundCategories[i]) )
+		if ( !Q_stricmp(pszString, g_pWeaponSoundCategories[i]) )
 			return (WeaponSound_t)i;
 	}
 	return -1;
@@ -435,7 +432,7 @@ void FileWeaponInfo_t::Parse( KeyValues *pKeyValuesData, const char *szWeaponNam
 	{
 		for ( int i = EMPTY; i < NUM_SHOOT_SOUND_TYPES; i++ )
 		{
-			const char *soundname = pSoundData->GetString( pWeaponSoundCategories[i] );
+			const char *soundname = pSoundData->GetString( g_pWeaponSoundCategories[i] );
 			if ( soundname && soundname[0] )
 			{
 				Q_strncpy( aShootSounds[i], soundname, MAX_WEAPON_STRING );
