@@ -19,6 +19,8 @@
 #define MOM_ROCKET_MODEL "models/weapons/w_missile.mdl"
 #define TF_ROCKET_MODEL "models/weapons/w_models/w_rocket.mdl"
 
+#define ROCKET_TRAIL_SOUND "Rocket.Trail"
+
 #ifndef CLIENT_DLL
 
 BEGIN_DATADESC(CMomRocket)
@@ -181,9 +183,7 @@ void CMomRocket::Precache()
     BaseClass::Precache();
     PrecacheModel(MOM_ROCKET_MODEL);
     PrecacheModel(TF_ROCKET_MODEL);
-    PrecacheScriptSound("Missile.Ignite");
-    PrecacheScriptSound("BaseExplosionEffect.Sound");
-    PrecacheScriptSound("BaseExplosionEffect.SoundTF2");
+    PrecacheScriptSound(ROCKET_TRAIL_SOUND);
 }
 
 void CMomRocket::SetupInitialTransmittedGrenadeVelocity(const Vector &velocity) { m_vInitialVelocity = velocity; }
@@ -194,7 +194,6 @@ void CMomRocket::Destroy(bool bNoGrenadeZone)
     SetNextThink(gpGlobals->curtime);
     SetTouch(NULL);
     AddEffects(EF_NODRAW);
-    StopSound("Missile.Ignite");
     DestroyTrail();
 
     if (bNoGrenadeZone)
@@ -211,6 +210,8 @@ void CMomRocket::Destroy(bool bNoGrenadeZone)
 
 void CMomRocket::DestroyTrail()
 {
+    StopSound(ROCKET_TRAIL_SOUND);
+
     if (UseTFTrail())
         return;
 
@@ -295,8 +296,6 @@ void CMomRocket::Explode(trace_t *pTrace, CBaseEntity *pOther)
 
     m_hOwner = nullptr;
 
-    StopSound("Missile.Ignite");
-
     if (!pOther->IsPlayer())
     {
         UTIL_DecalTrace(pTrace, "Scorch");
@@ -321,7 +320,6 @@ void CMomRocket::RocketTouch(CBaseEntity *pOther)
         DestroyTrail();
 
         m_hOwner = nullptr;
-        StopSound("Missile.Ignite");
         UTIL_Remove(this);
         return;
     }

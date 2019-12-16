@@ -15,8 +15,7 @@ class CWeaponInfo : public FileWeaponInfo_t
     int m_iCrosshairMinDistance;
     int m_iCrosshairDeltaDistance;
 
-    // Explosion effect
-    char m_szExplosionSound[128];
+    // Explosion effects
     char m_szExplosionEffect[128];
     char m_szExplosionPlayerEffect[128];
     char m_szExplosionWaterEffect[128];

@@ -1,20 +1,7 @@
-//========= Copyright © 1996-2006, Valve Corporation, All rights reserved. ============//
-//
-// Purpose: Game-specific explosion effects
-//
-//=============================================================================//
 #include "cbase.h"
 #include "c_basetempentity.h"
-#include "c_te_effect_dispatch.h"
-#include "c_te_legacytempents.h"
-#include "dlight.h"
 #include "engine/IEngineSound.h"
-#include "iefx.h"
-#include "mom_shareddefs.h"
-#include "tempent.h"
-#include "tier0/vprof.h"
-#include "weapon/mom_weapon_parse.h"
-#include "weapon/weapon_mom_rocketlauncher.h"
+#include "weapon/weapon_base.h"
 
 #include "tier0/memdbgon.h"
 
@@ -80,9 +67,9 @@ void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeap
         }
 
         // Sound.
-        if (Q_strlen(pWeaponInfo->m_szExplosionSound) > 0)
+        if (Q_strlen(pWeaponInfo->aShootSounds[EXPLOSION]) > 0)
         {
-            pszSound = pWeaponInfo->m_szExplosionSound;
+            pszSound = pWeaponInfo->aShootSounds[EXPLOSION];
         }
     }
 
@@ -128,9 +115,10 @@ C_TETFExplosion::C_TETFExplosion()
 
 void C_TETFExplosion::PostDataUpdate(DataUpdateType_t updateType)
 {
-    VPROF("C_TETFExplosion::PostDataUpdate");
-
-    TFExplosionCallback(m_vecOrigin, m_vecNormal, m_iWeaponID, m_hEntity);
+    if (updateType == DATA_UPDATE_CREATED)
+    {
+        TFExplosionCallback(m_vecOrigin, m_vecNormal, m_iWeaponID, m_hEntity);
+    }
 }
 
 static void RecvProxy_ExplosionEntIndex(const CRecvProxyData *pData, void *pStruct, void *pOut)
@@ -145,4 +133,4 @@ IMPLEMENT_CLIENTCLASS_EVENT_DT(C_TETFExplosion, DT_TETFExplosion, CTETFExplosion
     RecvPropVector(RECVINFO(m_vecNormal)),
     RecvPropInt(RECVINFO(m_iWeaponID)),
     RecvPropInt("entindex", 0, SIZEOF_IGNORE, 0, RecvProxy_ExplosionEntIndex),
-END_RECV_TABLE()
+END_RECV_TABLE();

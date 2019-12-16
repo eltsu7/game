@@ -21,10 +21,8 @@
 
 #include "tier0/memdbgon.h"
 
-static MAKE_TOGGLE_CONVAR(mom_fixed_spread, "1", FCVAR_REPLICATED,
-                   "Use fixed spread patterns for shotgun weapons. 1 = ON (default), 0 = OFF\n");
+static MAKE_TOGGLE_CONVAR(mom_fixed_spread, "1", FCVAR_REPLICATED, "Use fixed spread patterns for scatter shot weapons. 1 = ON (default), 0 = OFF\n");
 
-// TF2 spread pattern
 static const Vector g_vecFixedPattern[] = {
     Vector(0, 0, 0),        Vector(1, 0, 0),       Vector(-1, 0, 0),        Vector(0, -1, 0),       Vector(0, 1, 0),
     Vector(0.85, -0.85, 0), Vector(0.85, 0.85, 0), Vector(-0.85, -0.85, 0), Vector(-0.85, 0.85, 0), Vector(0, 0, 0),
