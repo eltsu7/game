@@ -67,6 +67,10 @@ void CMomentumRocketLauncher::Precache()
     m_iTFViewIndex = PrecacheModel(TF_ROCKETLAUNCHER_MODEL);
     m_iTFWorldIndex = PrecacheModel(TF_ROCKETLAUNCHER_WMODEL);
 
+    PrecacheParticleSystem(hWeaponData.m_szExplosionEffect);
+    PrecacheParticleSystem(hWeaponData.m_szExplosionPlayerEffect);
+    PrecacheParticleSystem(hWeaponData.m_szExplosionWaterEffect);
+
     // Default one is precached as part of the weapon info precache
     PrecacheScriptSound("BaseExplosionEffect.SoundTF2");
 

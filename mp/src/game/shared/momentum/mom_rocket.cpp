@@ -21,6 +21,9 @@
 
 #define ROCKET_TRAIL_SOUND "Rocket.Trail"
 
+#define TF_TRAIL_PARTICLE "rockettrail"
+#define TF_TRAIL_PARTICLE_UNDERWATER "rockettrail_underwater"
+
 #ifndef CLIENT_DLL
 
 BEGIN_DATADESC(CMomRocket)
@@ -104,15 +107,9 @@ void CMomRocket::PostDataUpdate(DataUpdateType_t type)
             bool bIsMomModel = !mom_rj_use_tf_rocketmodel.GetBool();
             // If the Momentum rocket model is used, the attachment point for particle systems is called "0" instead of "trail"
             const char *pAttachmentName = bIsMomModel ? "0" : "trail";
+            const char *pParticleName = (enginetrace->GetPointContents(GetAbsOrigin()) & MASK_WATER) ? TF_TRAIL_PARTICLE_UNDERWATER : TF_TRAIL_PARTICLE;
 
-            if (enginetrace->GetPointContents(GetAbsOrigin()) & MASK_WATER)
-            {
-                ParticleProp()->Create("rockettrail_underwater", PATTACH_POINT_FOLLOW, pAttachmentName);
-            }
-            else
-            {
-                ParticleProp()->Create("rockettrail", PATTACH_POINT_FOLLOW, pAttachmentName);
-            }
+            ParticleProp()->Create(pParticleName, PATTACH_POINT_FOLLOW, pAttachmentName);
         }
 
         // Now stick our initial velocity into the interpolation history
@@ -185,6 +182,9 @@ void CMomRocket::Precache()
     PrecacheModel(MOM_ROCKET_MODEL);
     PrecacheModel(TF_ROCKET_MODEL);
     PrecacheScriptSound(ROCKET_TRAIL_SOUND);
+
+    PrecacheParticleSystem(TF_TRAIL_PARTICLE);
+    PrecacheParticleSystem(TF_TRAIL_PARTICLE_UNDERWATER);
 }
 
 void CMomRocket::SetupInitialTransmittedGrenadeVelocity(const Vector &velocity) { m_vInitialVelocity = velocity; }
