@@ -20,7 +20,7 @@ WeaponData
     "item_flags"        "0"
 	
     // Particle effects for explosions
-    "ExplosionEffect"          "ExplosionCore_wall"
+    "ExplosionEffect"          "ExplosionCore_sapperdestroyed"
     "ExplosionMidAirEffect"    "ExplosionCore_MidAir"
     "ExplosionWaterEffect"     "ExplosionCore_MidAir_underwater"
 

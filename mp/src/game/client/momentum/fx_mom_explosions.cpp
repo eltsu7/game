@@ -30,7 +30,7 @@ void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeap
     static ConVarRef mom_rj_sounds("mom_rj_sounds");
 
     // Base explosion effect and sound.
-    const char *pszEffect = "ExplosionCore_wall";
+    const char *pszEffect = "ExplosionCore_sapperdestroyed";
     const char *pszSound = "BaseExplosionEffect.Sound";
 
     if (pWeaponInfo)
