@@ -30,7 +30,7 @@ CWeaponInfo::CWeaponInfo()
     : m_iCrosshairMinDistance(4), m_iCrosshairDeltaDistance(3)
 {
     m_szExplosionEffect[0] = '\0';
-    m_szExplosionPlayerEffect[0] = '\0';
+    m_szExplosionMidAirEffect[0] = '\0';
     m_szExplosionWaterEffect[0] = '\0';
 }
 
@@ -50,10 +50,10 @@ void CWeaponInfo::Parse(KeyValues *pKeyValuesData, const char *szWeaponName)
         Q_strncpy(m_szExplosionEffect, pszEffect, sizeof(m_szExplosionEffect));
     }
 
-    pszEffect = pKeyValuesData->GetString("ExplosionPlayerEffect", nullptr);
+    pszEffect = pKeyValuesData->GetString("ExplosionMidAirEffect", nullptr);
     if (pszEffect)
     {
-        Q_strncpy(m_szExplosionPlayerEffect, pszEffect, sizeof(m_szExplosionPlayerEffect));
+        Q_strncpy(m_szExplosionMidAirEffect, pszEffect, sizeof(m_szExplosionMidAirEffect));
     }
 
     pszEffect = pKeyValuesData->GetString("ExplosionWaterEffect", nullptr);

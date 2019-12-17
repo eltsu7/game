@@ -17,6 +17,6 @@ class CWeaponInfo : public FileWeaponInfo_t
 
     // Explosion effects
     char m_szExplosionEffect[128];
-    char m_szExplosionPlayerEffect[128];
+    char m_szExplosionMidAirEffect[128];
     char m_szExplosionWaterEffect[128];
 };

@@ -56,8 +56,8 @@ void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeap
         {
             if (bIsPlayer || bInAir)
             {
-                if (Q_strlen(pWeaponInfo->m_szExplosionPlayerEffect) > 0)
-                    pszEffect = pWeaponInfo->m_szExplosionPlayerEffect;
+                if (Q_strlen(pWeaponInfo->m_szExplosionMidAirEffect) > 0)
+                    pszEffect = pWeaponInfo->m_szExplosionMidAirEffect;
             }
             else
             {
