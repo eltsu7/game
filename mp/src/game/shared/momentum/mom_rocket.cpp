@@ -227,7 +227,6 @@ void CMomRocket::DestroyTrail()
 void CMomRocket::CreateRocketExplosionEffect(trace_t *pTrace, CBaseEntity *pOther)
 {
     static ConVarRef mom_rj_sounds("mom_rj_sounds");
-    int iEntIndex = pOther->entindex();
     CWeaponID m_hWeaponID = WEAPON_ROCKETLAUNCHER;
     Vector vecOrigin = GetAbsOrigin();
     CBaseEntity *pOwner = GetOwnerEntity();
@@ -256,7 +255,7 @@ void CMomRocket::CreateRocketExplosionEffect(trace_t *pTrace, CBaseEntity *pOthe
         break;
     case 0:
     case 2:
-        TE_TFExplosion(filter, 0.0f, vecOrigin, pTrace->plane.normal, m_hWeaponID, iEntIndex);
+        TE_TFExplosion(filter, 0.0f, vecOrigin, pTrace->plane.normal, m_hWeaponID);
         break;
     }
 }

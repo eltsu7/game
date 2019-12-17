@@ -5,20 +5,9 @@
 
 #include "tier0/memdbgon.h"
 
-void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeaponID iWeaponID,
-                         ClientEntityHandle_t hEntity)
+void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeaponID iWeaponID)
 {
     const auto pWeaponInfo = GetWeaponInfo(iWeaponID);
-
-    bool bIsPlayer = false;
-    if (hEntity.Get())
-    {
-        C_BaseEntity *pEntity = C_BaseEntity::Instance(hEntity);
-        if (pEntity && pEntity->IsPlayer())
-        {
-            bIsPlayer = true;
-        }
-    }
 
     // Calculate the angles, given the normal.
     bool bIsWater = (UTIL_PointContents(vecOrigin) & CONTENTS_WATER);
@@ -54,7 +43,7 @@ void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeap
         }
         else
         {
-            if (bIsPlayer || bInAir)
+            if (bInAir)
             {
                 if (Q_strlen(pWeaponInfo->m_szExplosionMidAirEffect) > 0)
                     pszEffect = pWeaponInfo->m_szExplosionMidAirEffect;
@@ -95,11 +84,10 @@ class C_TETFExplosion : public C_BaseTempEntity
 
     C_TETFExplosion();
 
-    ClientEntityHandle_t m_hEntity;
+protected:
+    void PostDataUpdate(DataUpdateType_t updateType) OVERRIDE;
 
-  private:
-    virtual void PostDataUpdate(DataUpdateType_t updateType);
-
+private:
     Vector m_vecOrigin;
     Vector m_vecNormal;
     CWeaponID m_iWeaponID;
@@ -110,27 +98,18 @@ C_TETFExplosion::C_TETFExplosion()
     m_vecOrigin.Init();
     m_vecNormal.Init();
     m_iWeaponID = WEAPON_NONE;
-    m_hEntity = INVALID_EHANDLE_INDEX;
 }
 
 void C_TETFExplosion::PostDataUpdate(DataUpdateType_t updateType)
 {
     if (updateType == DATA_UPDATE_CREATED)
     {
-        TFExplosionCallback(m_vecOrigin, m_vecNormal, m_iWeaponID, m_hEntity);
+        TFExplosionCallback(m_vecOrigin, m_vecNormal, m_iWeaponID);
     }
-}
-
-static void RecvProxy_ExplosionEntIndex(const CRecvProxyData *pData, void *pStruct, void *pOut)
-{
-    int nEntIndex = pData->m_Value.m_Int;
-    ((C_TETFExplosion *)pStruct)->m_hEntity =
-        (nEntIndex < 0) ? INVALID_EHANDLE_INDEX : ClientEntityList().EntIndexToHandle(nEntIndex);
 }
 
 IMPLEMENT_CLIENTCLASS_EVENT_DT(C_TETFExplosion, DT_TETFExplosion, CTETFExplosion)
     RecvPropVector(RECVINFO(m_vecOrigin)),
     RecvPropVector(RECVINFO(m_vecNormal)),
     RecvPropInt(RECVINFO(m_iWeaponID)),
-    RecvPropInt("entindex", 0, SIZEOF_IGNORE, 0, RecvProxy_ExplosionEntIndex),
 END_RECV_TABLE();
