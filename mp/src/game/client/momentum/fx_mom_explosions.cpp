@@ -5,77 +5,6 @@
 
 #include "tier0/memdbgon.h"
 
-void TFExplosionCallback(const Vector &vecOrigin, const Vector &vecNormal, CWeaponID iWeaponID)
-{
-    const auto pWeaponInfo = GetWeaponInfo(iWeaponID);
-
-    // Calculate the angles, given the normal.
-    bool bIsWater = (UTIL_PointContents(vecOrigin) & CONTENTS_WATER);
-    bool bInAir = false;
-    QAngle angExplosion(0.0f, 0.0f, 0.0f);
-
-    // Cannot use zeros here because we are sending the normal at a smaller bit size.
-    if (fabs(vecNormal.x) < 0.05f && fabs(vecNormal.y) < 0.05f && fabs(vecNormal.z) < 0.05f)
-    {
-        bInAir = true;
-        angExplosion.Init();
-    }
-    else
-    {
-        VectorAngles(vecNormal, angExplosion);
-        bInAir = false;
-    }
-
-    static ConVarRef mom_rj_particles("mom_rj_particles");
-    static ConVarRef mom_rj_sounds("mom_rj_sounds");
-
-    // Base explosion effect and sound.
-    const char *pszEffect = "ExplosionCore_sapperdestroyed";
-    const char *pszSound = "BaseExplosionEffect.Sound";
-
-    if (pWeaponInfo)
-    {
-        // Explosions.
-        if (bIsWater)
-        {
-            if (Q_strlen(pWeaponInfo->m_szExplosionWaterEffect) > 0)
-                pszEffect = pWeaponInfo->m_szExplosionWaterEffect;
-        }
-        else
-        {
-            if (bInAir)
-            {
-                if (Q_strlen(pWeaponInfo->m_szExplosionMidAirEffect) > 0)
-                    pszEffect = pWeaponInfo->m_szExplosionMidAirEffect;
-            }
-            else
-            {
-                if (Q_strlen(pWeaponInfo->m_szExplosionEffect) > 0)
-                    pszEffect = pWeaponInfo->m_szExplosionEffect;
-            }
-        }
-
-        // Sound.
-        if (Q_strlen(pWeaponInfo->aShootSounds[EXPLOSION]) > 0)
-        {
-            pszSound = pWeaponInfo->aShootSounds[EXPLOSION];
-        }
-    }
-
-    if (mom_rj_sounds.GetInt() > 0)
-    {
-        CLocalPlayerFilter filter;
-        if (mom_rj_sounds.GetInt() == 2)
-            pszSound = "BaseExplosionEffect.SoundTF2";
-        C_BaseEntity::EmitSound(filter, SOUND_FROM_WORLD, pszSound, &vecOrigin);
-    }
-    
-    if (mom_rj_particles.GetInt() == 2)
-    {
-        DispatchParticleEffect(pszEffect, vecOrigin, angExplosion);
-    }
-}
-
 class C_TETFExplosion : public C_BaseTempEntity
 {
   public:
@@ -104,7 +33,57 @@ void C_TETFExplosion::PostDataUpdate(DataUpdateType_t updateType)
 {
     if (updateType == DATA_UPDATE_CREATED)
     {
-        TFExplosionCallback(m_vecOrigin, m_vecNormal, m_iWeaponID);
+        const auto pWeaponInfo = GetWeaponInfo(m_iWeaponID);
+        AssertMsg(pWeaponInfo, "Invalid pWeaponInfo for weaponID %i\n", m_iWeaponID);
+        if (!pWeaponInfo)
+            return;
+
+        const bool bIsWater = (UTIL_PointContents(m_vecOrigin) & CONTENTS_WATER);
+        // Cannot use zeros here because we are sending the normal at a smaller bit size.
+        const bool bInAir = fabs(m_vecNormal.x) < 0.05f && fabs(m_vecNormal.y) < 0.05f && fabs(m_vecNormal.z) < 0.05f;
+        QAngle angExplosion(0.0f, 0.0f, 0.0f);
+
+        if (!bInAir)
+            VectorAngles(m_vecNormal, angExplosion);
+
+        static ConVarRef mom_rj_particles("mom_rj_particles");
+        static ConVarRef mom_rj_sounds("mom_rj_sounds");
+
+        if (mom_rj_sounds.GetInt() > 0)
+        {
+            const char *pszSound = pWeaponInfo->aShootSounds[EXPLOSION];
+            if (mom_rj_sounds.GetInt() == 2)
+                pszSound = "BaseExplosionEffect.SoundTF2";
+
+            CLocalPlayerFilter filter;
+            C_BaseEntity::EmitSound(filter, SOUND_FROM_WORLD, pszSound, &m_vecOrigin);
+        }
+
+        if (mom_rj_particles.GetInt() > 0)
+        {
+            const char *pszEffect = "ExplosionCore_sapperdestroyed";
+
+            if (bIsWater)
+            {
+                if (Q_strlen(pWeaponInfo->m_szExplosionWaterEffect) > 0)
+                    pszEffect = pWeaponInfo->m_szExplosionWaterEffect;
+            }
+            else
+            {
+                if (bInAir)
+                {
+                    if (Q_strlen(pWeaponInfo->m_szExplosionMidAirEffect) > 0)
+                        pszEffect = pWeaponInfo->m_szExplosionMidAirEffect;
+                }
+                else
+                {
+                    if (Q_strlen(pWeaponInfo->m_szExplosionEffect) > 0)
+                        pszEffect = pWeaponInfo->m_szExplosionEffect;
+                }
+            }
+
+            DispatchParticleEffect(pszEffect, m_vecOrigin, angExplosion);
+        }
     }
 }
 
