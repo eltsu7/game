@@ -53,7 +53,6 @@ class CMomRocket : public CBaseProjectile
 
   protected:
     void CreateSmokeTrail();
-    void CreateRocketExplosionEffect(trace_t *pTrace, CBaseEntity *pOther);
 
     CHandle<RocketTrail> m_hRocketTrail;
     float m_flDamage;
