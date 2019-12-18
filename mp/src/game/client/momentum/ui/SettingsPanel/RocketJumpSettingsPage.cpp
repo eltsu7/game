@@ -34,12 +34,10 @@ RocketJumpSettingsPage::RocketJumpSettingsPage(Panel *pParent) : BaseClass(pPare
     m_pTrailBox->AddItem("#MOM_Settings_RJ_TF2", nullptr);
     m_pTrailBox->AddActionSignalTarget(this);
 
-    m_pEnableTFRocketModel = new CvarToggleCheckButton(
-        this, "EnableTFRocketModel", "#MOM_Settings_RJ_Enable_TF_RocketModel", "mom_rj_use_tf_rocketmodel");
-    m_pEnableTFViewModel = new CvarToggleCheckButton(
-        this, "EnableTFViewModel", "#MOM_Settings_RJ_Enable_TF_ViewModel","mom_rj_use_tf_viewmodel");
-    m_pEnableCenterFire = new CvarToggleCheckButton(
-        this, "EnableCenterFire", "#MOM_Settings_RJ_Enable_Center_Fire", "mom_rj_center_fire");
+    m_pEnableTFRocketModel = new CvarToggleCheckButton(this, "EnableTFRocketModel", "#MOM_Settings_RJ_Enable_TF_RocketModel", "mom_rj_use_tf_rocketmodel");
+    m_pEnableTFViewModel = new CvarToggleCheckButton(this, "EnableTFViewModel", "#MOM_Settings_RJ_Enable_TF_ViewModel","mom_rj_use_tf_viewmodel");
+    m_pEnableCenterFire = new CvarToggleCheckButton(this, "EnableCenterFire", "#MOM_Settings_RJ_Enable_Center_Fire", "mom_rj_center_fire");
+    m_pToggleRocketTrailSound = new CvarToggleCheckButton(this, "ToggleTrailSound", "#MOM_Settings_RJ_Trail_Sound_Enable", "mom_rj_trail_sound_enable");
 
     LoadControlSettings("resource/ui/SettingsPanel_RocketJumpSettings.res");
 }
@@ -59,6 +57,7 @@ void RocketJumpSettingsPage::OnApplyChanges()
     m_pEnableTFRocketModel->ApplyChanges();
     m_pEnableTFViewModel->ApplyChanges();
     m_pEnableCenterFire->ApplyChanges();
+    m_pToggleRocketTrailSound->ApplyChanges();
 }
 
 void RocketJumpSettingsPage::LoadSettings()
