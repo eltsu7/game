@@ -55,6 +55,10 @@ void RocketJumpSettingsPage::OnApplyChanges()
     mom_rj_particles.SetValue(m_pParticlesBox->GetActiveItem());
     mom_rj_sounds.SetValue(m_pSoundsBox->GetActiveItem());
     mom_rj_trail.SetValue(m_pTrailBox->GetActiveItem());
+
+    m_pEnableTFRocketModel->ApplyChanges();
+    m_pEnableTFViewModel->ApplyChanges();
+    m_pEnableCenterFire->ApplyChanges();
 }
 
 void RocketJumpSettingsPage::LoadSettings()
@@ -64,8 +68,4 @@ void RocketJumpSettingsPage::LoadSettings()
     m_pParticlesBox->ActivateItemByRow(mom_rj_particles.GetInt());
     m_pSoundsBox->ActivateItemByRow(mom_rj_sounds.GetInt());
     m_pTrailBox->ActivateItemByRow(mom_rj_trail.GetInt());
-
-    m_pEnableTFRocketModel->ApplyChanges();
-    m_pEnableTFViewModel->ApplyChanges();
-    m_pEnableCenterFire->ApplyChanges();
 }
